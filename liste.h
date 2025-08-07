@@ -22,5 +22,6 @@
     int pop(liste*);
     void clear(liste*);
     void clearBuffer();
+    void freeAllNodes(liste*);
     
 #endif

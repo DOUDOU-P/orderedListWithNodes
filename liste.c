@@ -45,7 +45,7 @@ int rmve(liste* myList, const int data)
 {
     assert(myList != NULL);
 
-    int rData = 0;
+    int rData = EOF;
     node* actual = myList->first;
     while(actual->next != NULL && actual->next->val != data)
         actual = actual->next;
@@ -81,30 +81,25 @@ size_t getListSize(liste* myList)
     assert(myList != NULL);
     return myList->size;
 }
-
-int pop(liste* myList)
+void freeAllNodes(liste* myList)
 {
-    int pValue = 0;
-    if(myList != NULL && myList->first != NULL)
-    {
-        node* temp = myList->first;
-        pValue = temp->val;
-        myList->first = temp->next;
-        (myList->size)--;
-        free(temp);
-    }
-
-    return pValue;
+    clear(myList);
+    node* temp = myList->first;
+    myList->first = temp->next;
+    myList->size = 0;
+    free(temp);
 }
-
 void clear(liste* myList)
 {
     assert(myList != NULL);
     
-    if(myList->first != NULL)
+    int pValue = 0;
+    while (myList->first->next != NULL)
     {
-        pop(myList);
-        clear(myList);
+        node* temp = myList->first->next;
+        myList->first->next = temp->next;
+        (myList->size)--;
+        free(temp);
     }
 }
 
