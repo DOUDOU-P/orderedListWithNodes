@@ -17,7 +17,7 @@ int main(void)
         printf("t = taille de la liste\n");
         printf("v = vider la liste\n");
         printf("f = Fin du programme\n");
-        printf("Quelle operation, souhaitez vous effectuer sur la liste?\n");
+        printf("Quelle operation, souhaitez vous effectuer sur la liste?: ");
         scanf("%c", &choice);
 
         switch (choice)

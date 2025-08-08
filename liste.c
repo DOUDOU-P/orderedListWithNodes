@@ -7,36 +7,31 @@
 // Initialisation avec un noeud bidon, un noeud qui va faciliter les manipulations d'ajout, on ne se sert pas de son contenu
 void initialize(liste* myList)
 {
-    assert(myList != NULL);
-    node* new = malloc(sizeof(*new));
-    new->next = NULL;
-    new->val = INT_MAX;
-    myList->first = new;
+    node* newNode = malloc(sizeof(*newNode));
+    assert(myList != NULL && newNode != NULL);
+    newNode->next = NULL;
+    newNode->val = INT_MAX;
+    myList->first = newNode;
     myList->size = 0;
 }
 
 // Ajoute une valeur à la liste en respectant l'ordre
 void add(liste* myList, const int data)
 {
-    assert(myList != NULL);
+    
+    node* newNode = malloc(sizeof(*newNode));
 
-    node* new = malloc(sizeof(*new));
-    new->val = data;
-    new->next = NULL;
+    assert(myList != NULL && newNode != NULL);
+    newNode->val = data;
+    newNode->next = NULL;
 
     node* actual = myList->first;
 
     while(actual->next != NULL && actual->next->val < data)
         actual = actual->next;
-    
-    if(actual->next == NULL)
-        actual->next = new;
-    
-    else
-    {
-        new->next = actual->next;
-        actual->next = new;
-    }
+
+    newNode->next = actual->next;
+    actual->next = newNode;
 
     (myList->size)++;
 }
@@ -45,7 +40,6 @@ int rmve(liste* myList, const int data)
 {
     assert(myList != NULL);
 
-    int rData = EOF;
     node* actual = myList->first;
     while(actual->next != NULL && actual->next->val != data)
         actual = actual->next;
@@ -53,13 +47,13 @@ int rmve(liste* myList, const int data)
     if(actual->next != NULL)
     {
         node* temp = actual->next;
-        rData = temp->val;
         actual->next = temp->next;
         (myList->size)--;
         free(temp);
+        return 1;
     }
 
-    return rData;
+    return 0;
 }
 
 void displayList(liste* myList)
@@ -81,26 +75,26 @@ size_t getListSize(liste* myList)
     assert(myList != NULL);
     return myList->size;
 }
-void freeAllNodes(liste* myList)
-{
-    clear(myList);
-    node* temp = myList->first;
-    myList->first = temp->next;
-    myList->size = 0;
-    free(temp);
-}
+
 void clear(liste* myList)
 {
     assert(myList != NULL);
     
-    int pValue = 0;
     while (myList->first->next != NULL)
     {
         node* temp = myList->first->next;
         myList->first->next = temp->next;
-        (myList->size)--;
         free(temp);
     }
+
+    myList->size = 0;
+}
+
+void freeAllNodes(liste* myList)
+{
+    clear(myList);
+    free(myList->first);
+    myList->first = NULL;
 }
 
 void clearBuffer()
